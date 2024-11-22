@@ -17,13 +17,12 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <div style={{ height: '100%', overflowY: 'auto', padding: '20px' }}>
+    <div className="App" style={{ height: '100%', overflowY: 'auto', padding: '20px' }}>
         {logs.length > 0 ? (
           logs.map((log, index) => (
             <div key={index} style={{ display: 'flex', justifyContent: 'flex-start', padding: '10px 0', width: '100%' }}>
               <span style={{ color: '#00ff00', marginRight: '10px', flexShrink: 0 }}>{log.timestamp}:</span>
-              <span style={{ color: '#ffffff', textAlign: 'left', wordWrap: 'break-word', flexGrow: 1 }}>{log.message}</span>
+              <span style={{ color: '#ffffff', textAlign: 'left', whiteSpace: 'pre-wrap', wordWrap: 'break-word', flexGrow: 1 }}>{log.message}</span>
             </div>
           ))
         ) : (
@@ -31,7 +30,6 @@ function App() {
             No logs available
           </div>
         )}
-      </div>
     </div>
   )
 }
