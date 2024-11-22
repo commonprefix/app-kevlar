@@ -1,36 +1,37 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [logs, setLogs] = useState<{ timestamp: string, message: string }[]>([])
+  const maxLogs = 10; // Set a limit for the number of logs to keep
 
   useEffect(() => {
     const unsubscribe = window.electron.subscribeLogs((log) => {
-      console.log(log);
+      const timestamp = new Date().toLocaleString();
+      setLogs((prevLogs) => {
+        const newLogs = [...prevLogs, { timestamp, message: log }];
+        return newLogs.length > maxLogs ? newLogs.slice(-maxLogs) : newLogs;
+      });
     });
     return unsubscribe;
   }, []);
 
   return (
     <div className="App">
-      <div>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div style={{ height: '100%', overflowY: 'auto', padding: '20px' }}>
+        {logs.length > 0 ? (
+          logs.map((log, index) => (
+            <div key={index} style={{ display: 'flex', justifyContent: 'flex-start', padding: '10px 0', width: '100%' }}>
+              <span style={{ color: '#00ff00', marginRight: '10px', flexShrink: 0 }}>{log.timestamp}:</span>
+              <span style={{ color: '#ffffff', textAlign: 'left', wordWrap: 'break-word', flexGrow: 1 }}>{log.message}</span>
+            </div>
+          ))
+        ) : (
+          <div style={{ color: '#ff0000', textAlign: 'center', padding: '10px 0' }}>
+            No logs available
+          </div>
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
   )
 }

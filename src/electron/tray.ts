@@ -1,4 +1,4 @@
-import { Tray, nativeImage, BrowserWindow } from 'electron';
+import { Tray, nativeImage, BrowserWindow, app } from 'electron';
 import path from 'path';
 import { buildMenu } from './menu.js';
 import KevlarHandler from './kevlar.js';
@@ -47,5 +47,8 @@ export default class TrayCreator {
 
   private handleLogs() {
     this.logWindow.show();
+    if (app.dock) {
+      app.dock.show();
+    }
   }
 }

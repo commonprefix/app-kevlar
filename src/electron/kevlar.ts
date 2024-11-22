@@ -24,7 +24,8 @@ export default class KevlarHandler {
 
         this.kevlar.stderr?.on('data', (data: any) => {
             const logMessage = data.toString();
-            ipcWebContentsSend('logs', this.logWindow.webContents, logMessage);
+            //ipcWebContentsSend('logs', this.logWindow.webContents, logMessage);
+            console.error(logMessage);
         });
 
         this.kevlar.on('close', (code: number) => {
