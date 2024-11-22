@@ -1,13 +1,9 @@
-import { app, BrowserWindow } from "electron";
-import { isDev } from "./utils.js";
-import { getUIPath } from "./pathResolver.js";
+import { app, Menu } from "electron";
+import TrayCreator from "./tray.js";
+
+Menu.setApplicationMenu(null);
 
 app.on("ready", () => {
-  const mainWindow = new BrowserWindow({});
-
-  if (isDev()) {
-    mainWindow.loadURL('http://localhost:3000');
-  } else {
-    mainWindow.loadFile(getUIPath());
-  }
+  new TrayCreator();
 });
+
