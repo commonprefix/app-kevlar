@@ -1,4 +1,4 @@
-import { Tray, nativeImage } from 'electron';
+import { Tray, nativeImage, BrowserWindow } from 'electron';
 import path from 'path';
 import { buildMenu } from './menu.js';
 import KevlarHandler from './kevlar.js';
@@ -10,12 +10,14 @@ export default class TrayCreator {
   icon: any;
   isRunning: boolean = false;
   kevlar: KevlarHandler;
+  logWindow: BrowserWindow;
 
-  constructor() {
+  constructor(logWindow: BrowserWindow) {
+    this.logWindow = logWindow;
     this.icon_path = path.join(getAssetPath(), "kevlar.png");
     this.icon = nativeImage.createFromPath(this.icon_path).resize({ width: 16, height: 16 });
     this.icon.setTemplateImage(true);
-    this.kevlar = new KevlarHandler();
+    this.kevlar = new KevlarHandler(logWindow);
     this.trayInstance = new Tray(this.icon);
     this.trayInstance.setToolTip('Kevlar Light Client');
     this.updateMenu();
@@ -44,5 +46,6 @@ export default class TrayCreator {
   }
 
   private handleLogs() {
+    this.logWindow.show();
   }
 }

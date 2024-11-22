@@ -1,29 +1,30 @@
 import { spawn, ChildProcess } from 'child_process';
 import { BrowserWindow } from 'electron';
+import { ipcWebContentsSend } from './utils.js';
 
 const kevlarPath = "/Users/sofikitis/workspace/open-source/kevlar";
 const command = "npm run rpc-proxy";
 
 export default class KevlarHandler {
     kevlar: ChildProcess | null = null;
-    logs: string[] = [];
-    logWindow: BrowserWindow | null = null;
+    logWindow: BrowserWindow;
+
+    constructor(logWindow: BrowserWindow) {
+        this.logWindow = logWindow;
+    }
 
     start(): void {
         console.log('Starting Kevlar');
-        this.logs = [];
         this.kevlar = spawn(command, { cwd: kevlarPath, shell: true });
 
         this.kevlar.stdout?.on('data', (data: any) => {
             const logMessage = data.toString();
-            console.log(logMessage);
-            this.logs.push(logMessage);
+            ipcWebContentsSend('logs', this.logWindow.webContents, logMessage);
         });
 
         this.kevlar.stderr?.on('data', (data: any) => {
             const logMessage = data.toString();
-            console.error(logMessage);
-            this.logs.push(logMessage);
+            ipcWebContentsSend('logs', this.logWindow.webContents, logMessage);
         });
 
         this.kevlar.on('close', (code: number) => {
