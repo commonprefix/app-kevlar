@@ -13,7 +13,7 @@ export default class KevlarHandler {
         this.logWindow = logWindow;
     }
 
-    start(): void {
+    start(onCloseCallback: () => void): void {
         console.log('Starting Kevlar');
         this.kevlar = spawn(command, { cwd: kevlarPath, shell: true });
 
@@ -30,7 +30,9 @@ export default class KevlarHandler {
 
         this.kevlar.on('close', (code: number) => {
             console.log(`Kevlar process exited with code ${code}`);
+            ipcWebContentsSend('logs', this.logWindow.webContents, `Kevlar process exited with code ${code}`);
             this.kevlar = null;
+            onCloseCallback();
         });
     }
 

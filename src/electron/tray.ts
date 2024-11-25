@@ -36,7 +36,10 @@ export default class TrayCreator {
   private handleStart() {
     this.isRunning = true;
     this.updateMenu();
-    this.kevlar.start();
+    this.kevlar.start(() => {
+      this.isRunning = false;
+      this.updateMenu();
+    });
   }
 
   private handleStop() {
