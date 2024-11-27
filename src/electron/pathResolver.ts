@@ -17,3 +17,7 @@ export function getUIPath() {
 export function getAssetPath() {
   return path.join(app.getAppPath(), isDev() ? '.' : '..', 'src/assets');
 }
+
+export function getKevlarPath() {
+  return path.join(app.getAppPath(), isDev() ? '.' : '..', 'dist-electron/kevlar/start-rpc.js');
+}
