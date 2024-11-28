@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from "electron";
 import TrayCreator from "./tray.js";
 import { isDev } from "./utils.js";
-import { getPreloadPath, getUIPath } from "./pathResolver.js";
+import { getPreloadPath, getLoggingPath } from "./pathResolver.js";
 
 //Menu.setApplicationMenu(null);
 
@@ -13,9 +13,9 @@ app.on("ready", () => {
     }
   });
   if (isDev()) {
-    logWindow.loadURL('http://localhost:3000');
+    logWindow.loadURL('http://localhost:3000/src/ui/pages/logging/');
   } else {
-    logWindow.loadFile(getUIPath());
+    logWindow.loadFile(getLoggingPath());
   }
   logWindow.hide();
   if (app.dock) {

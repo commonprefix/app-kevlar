@@ -2,7 +2,8 @@ import { Tray, nativeImage, BrowserWindow, app } from 'electron';
 import path from 'path';
 import { buildMenu } from './menu.js';
 import KevlarHandler from './kevlar.js';
-import { getAssetPath } from './pathResolver.js';
+import { getAssetPath, getMetamaskPath } from './pathResolver.js';
+import { openInBrowser } from './metamask.js';
 
 export default class TrayCreator {
   trayInstance: Tray;
@@ -11,6 +12,7 @@ export default class TrayCreator {
   isRunning: boolean = false;
   kevlar: KevlarHandler;
   logWindow: BrowserWindow;
+  isOnMetamask: boolean = false;
 
   constructor(logWindow: BrowserWindow) {
     this.logWindow = logWindow;
@@ -28,7 +30,9 @@ export default class TrayCreator {
       () => this.handleStart(),
       () => this.handleStop(),
       () => this.handleLogs(),
-      this.isRunning
+      () => this.handleMetamask(),
+      this.isRunning,
+      this.isOnMetamask
     );
     this.trayInstance.setContextMenu(menu);
   }
@@ -53,5 +57,9 @@ export default class TrayCreator {
     if (app.dock) {
       app.dock.show();
     }
+  }
+
+  private async handleMetamask() {
+    openInBrowser(getMetamaskPath());
   }
 }

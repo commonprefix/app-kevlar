@@ -4,12 +4,19 @@ export function buildMenu(
   onStart: () => void,
   onStop: () => void,
   onLogs: () => void,
-  isRunning: boolean
+  onAddToMetamask: () => void,
+  isRunning: boolean,
+  isOnMetamask: boolean
 ): Menu {
   const template: MenuItemConstructorOptions[] = [
     {
       label: isRunning ? '⚡ Kevlar Running' : '🔌 Kevlar Stopped',
       enabled: false
+    },
+    {
+      label: 'Add to Metamask',
+      enabled: !isOnMetamask,
+      click: onAddToMetamask
     },
     { type: 'separator' },
     {

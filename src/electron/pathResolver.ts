@@ -10,8 +10,16 @@ export function getPreloadPath() {
   )
 }
 
-export function getUIPath() {
-  return path.join(app.getAppPath(), 'dist-react/index.html');
+export function getLoggingPath() {
+  const devPath = 'http://localhost:3000/src/ui/pages/logging/';
+  const prodPath = path.join(app.getAppPath(), 'dist-react/src/ui/pages/logging/index.html');
+  return isDev() ? devPath : prodPath;
+}
+
+export function getMetamaskPath() {
+  const devPath = 'http://localhost:3000/src/ui/pages/metamask/';
+  const prodPath = path.join(app.getAppPath(), 'dist-react/src/ui/pages/metamask/index.html');
+  return isDev() ? devPath : prodPath;
 }
 
 export function getAssetPath() {

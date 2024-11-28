@@ -8,6 +8,12 @@ export default defineConfig({
   base: './',
   build: {
     outDir: 'dist-react',
+    rollupOptions: {
+      input: {
+        metamask: path.resolve(__dirname, 'src', 'ui', 'pages', 'metamask', 'index.html'),
+        logging: path.resolve(__dirname, 'src', 'ui', 'pages', 'logging', 'index.html'),
+      },
+    },
   },
   server: {
     port: 3000,
