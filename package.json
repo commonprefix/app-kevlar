@@ -5,7 +5,7 @@
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
-    "dev": "yarn dev:react & yarn dev:electron",
+    "dev": "npm-run-all --parallel dev:react dev:electron",
     "dev:react": "vite",
     "dev:electron": "yarn transpile:electron; cross-env NODE_ENV=development electron .",
     "build": "tsc && vite build",
@@ -21,6 +21,8 @@
     "@lightclients/kevlar": "^0.4.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dmg-builder": "24.13.3",
+    "electron-builder-squirrel-windows": "24.13.3",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
