@@ -3,7 +3,8 @@ import path from 'path';
 import { buildMenu } from './menu.js';
 import KevlarHandler from './kevlar.js';
 import { getAssetPath, getMetamaskPath } from './pathResolver.js';
-import { openInBrowser } from './metamask.js';
+import { shell } from 'electron';
+import { isDev } from './utils.js';
 
 export default class TrayCreator {
   trayInstance: Tray;
@@ -60,6 +61,10 @@ export default class TrayCreator {
   }
 
   private async handleMetamask() {
-    openInBrowser(getMetamaskPath());
+    if (!isDev()) {
+      shell.openExternal('http://localhost:8080');
+    } else {
+      shell.openExternal(getMetamaskPath());
+    }
   }
 }

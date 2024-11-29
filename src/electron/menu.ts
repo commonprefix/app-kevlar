@@ -15,7 +15,7 @@ export function buildMenu(
     },
     {
       label: 'Add to Metamask',
-      enabled: !isOnMetamask,
+      enabled: !isOnMetamask && isRunning,
       click: onAddToMetamask
     },
     { type: 'separator' },

@@ -10,4 +10,7 @@ interface Window {
   electron: {
     subscribeLogs: (callback: (logs: Logs) => void) => UnsubscribeFunction;
   }
+  ethereum: {
+    request: any;
+  }
 }

@@ -23,6 +23,7 @@
     "clsx": "^2.1.1",
     "dmg-builder": "24.13.3",
     "electron-builder-squirrel-windows": "24.13.3",
+    "express": "^4.21.1",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@types/express": "^5.0.0",
     "@types/node": "^22.9.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
