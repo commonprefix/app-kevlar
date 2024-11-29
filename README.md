@@ -1,50 +1,42 @@
-# React + TypeScript + Vite
+# Kevlar Desktop App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a desktop tray app build with Electron. It allows you to start the
+[kevlar](https://github.com/commonprefix/kevlar)
+light client, integrate it with your Metamask wallet and view the logs.
 
-Currently, two official plugins are available:
+## Building and Running Locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Install Dependencies**:  
+   Ensure you have Node.js and Yarn installed. Then, run the following command to install the necessary dependencies:
+   ```bash
+   yarn
+   ```
 
-## Expanding the ESLint configuration
+2. **Start the Development Server**:  
+   To start the app in development mode, use:
+   ```bash
+   yarn dev
+   ```
+   This will launch the app in a new tray icon in your system tray.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Building for Production
 
-- Configure the top-level `parserOptions` property like this:
+1. **Package for Different Operating Systems**:  
+   Use the following commands to build the app for different operating systems:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+   - **Windows**:
+     ```bash
+     yarn dist:win
+     ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+   - **macOS**:
+     ```bash
+     yarn dist:mac
+     ```
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+   - **Linux**:
+     ```bash
+     yarn dist:linux
+     ```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+   These commands will generate the respective installers for each OS in the `dist` directory.
