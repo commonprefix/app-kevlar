@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import './App.css'
 
 function App() {
+  const [added, setAdded] = useState(false);
+
   const handleAddToMetamask = async () => {
     try {
       // Assuming you have access to the necessary variables from start-rpc.ts
@@ -24,15 +27,30 @@ function App() {
           blockExplorerUrls,
         }],
       });
+
+      // Notify the server about the button click
+      await fetch('http://localhost:8080/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: 'Button clicked to add to MetaMask' }),
+      });
+
+      setAdded(true);
     } catch (error) {
       console.log(error);
     }
   };
 
-
   return (
     <div className="App" style={{ height: '100%', overflowY: 'auto', padding: '0'}}>
-      <button onClick={handleAddToMetamask}>Add to MetaMask</button>
+      {
+        added && <div>Added to MetaMask</div>
+      }
+      {
+        !added && <button onClick={handleAddToMetamask}>Add to MetaMask</button>
+      }
     </div>
   )
 }

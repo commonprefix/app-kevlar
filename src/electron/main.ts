@@ -7,8 +7,6 @@ import { startMetamaskServer } from "./metamask.js";
 //Menu.setApplicationMenu(null);
 
 app.on("ready", () => {
-  // init server for metamask
-  startMetamaskServer();
   // init log window hidden
   const logWindow = new BrowserWindow({
     webPreferences: {
@@ -26,7 +24,9 @@ app.on("ready", () => {
   }
   handleCloseEvent(logWindow);
 
-  new TrayCreator(logWindow);
+  const tray = new TrayCreator(logWindow);
+
+  startMetamaskServer(tray.addedToMetamask);
 });
 
 function handleCloseEvent(logWindow: BrowserWindow) {

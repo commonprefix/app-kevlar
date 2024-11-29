@@ -67,4 +67,9 @@ export default class TrayCreator {
       shell.openExternal(getMetamaskPath());
     }
   }
+
+  addedToMetamask = () => {
+    this.isOnMetamask = true;
+    this.updateMenu();
+  }
 }
