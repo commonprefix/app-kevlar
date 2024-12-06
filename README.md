@@ -7,7 +7,7 @@ light client, integrate it with your Metamask wallet and view the logs.
 ## Building and Running Locally
 
 1. **Install Dependencies**:  
-   Ensure you have Node.js and Yarn installed. Then, run the following command to install the necessary dependencies:
+   Ensure you have Node.js, tsc typescript compiler, and Yarn installed. Then, run the following command to install the necessary dependencies:
    ```bash
    yarn
    ```
