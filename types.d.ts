@@ -1,14 +1,18 @@
-type Logs = string
+type Log = {
+  message: string;
+  level: string;
+  timestamp: string;
+}
 
 type EventPayloadMapping = {
-  logs: Logs;
+  logs: Log;
 }
 
 type UnsubscribeFunction = () => void;
 
 interface Window {
   electron: {
-    subscribeLogs: (callback: (logs: Logs) => void) => UnsubscribeFunction;
+    subscribeLogs: (callback: (logs: Log) => void) => UnsubscribeFunction;
   }
   ethereum: {
     request: any;

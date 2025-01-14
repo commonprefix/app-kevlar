@@ -45,17 +45,18 @@ export default class KevlarHandler {
 
         this.kevlar.stdout?.on('data', (data: any) => {
             const logMessage = data.toString();
-            ipcWebContentsSend('logs', this.logWindow.webContents, logMessage);
+            ipcWebContentsSend('logs', this.logWindow.webContents, { message: logMessage, level: 'info', timestamp: new Date().toISOString() });
         });
 
         this.kevlar.stderr?.on('data', (data: any) => {
             const logMessage = data.toString();
+            ipcWebContentsSend('logs', this.logWindow.webContents, { message: logMessage, level: 'error', timestamp: new Date().toISOString() });
             console.error(logMessage);
         });
 
         this.kevlar.on('close', (code: number) => {
             console.log(`Kevlar process exited with code ${code}`);
-            ipcWebContentsSend('logs', this.logWindow.webContents, `Kevlar process exited with code ${code}`);
+            ipcWebContentsSend('logs', this.logWindow.webContents, { message: `Kevlar process exited with code ${code}`, level: 'info', timestamp: new Date().toISOString() });
             this.kevlar = null;
             onCloseCallback();
         });

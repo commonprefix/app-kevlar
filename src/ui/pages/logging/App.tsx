@@ -1,37 +1,36 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
+import { LogList } from '../../components/LogList'
+import { Button } from '../../components/button'
 import './App.css'
 
-function App() {
-  const [logs, setLogs] = useState<{ timestamp: string, message: string }[]>([])
-  const maxLogs = 10; // Set a limit for the number of logs to keep
+export default function LogsPage() {
+  const [logs, setLogs] = useState<Log[]>([])
 
   useEffect(() => {
-    const unsubscribe = window.electron.subscribeLogs((log) => {
-      const timestamp = new Date().toLocaleString();
+    const unsubscribe = window.electron.subscribeLogs((log: Log) => {
       setLogs((prevLogs) => {
-        const newLogs = [...prevLogs, { timestamp, message: log }];
-        return newLogs.length > maxLogs ? newLogs.slice(-maxLogs) : newLogs;
-      });
-    });
-    return unsubscribe;
-  }, []);
+        const newLogs = [log, ...prevLogs]
+        return newLogs.slice(0, 10)
+      })
+    })
+    return unsubscribe
+  }, [])
+
+  const clearLogs = () => {
+    setLogs([])
+  }
 
   return (
-    <div className="App" style={{ height: '100%', overflowY: 'auto', padding: '0'}}>
-        {logs.length > 0 ? (
-          logs.map((log, index) => (
-            <div key={index} style={{ display: 'flex', justifyContent: 'flex-start', padding: '10px', width: '100%' }}>
-              <span style={{ color: '#00ff00', marginRight: '10px', flexShrink: 0 }}>{log.timestamp}:</span>
-              <span style={{ color: '#ffffff', textAlign: 'left', whiteSpace: 'pre-wrap', wordWrap: 'break-word', flexGrow: 1, overflowX: 'hidden' }}>{log.message}</span>
-            </div>
-          ))
-        ) : (
-          <div style={{ color: '#ff0000', textAlign: 'center', padding: '10px 0' }}>
-            No logs available
+    <div className="flex items-center justify-center">
+      <div className="w-full p-8">
+        <h1 className="text-3xl font-bold mb-6 text-center">Kevlar Logs</h1>
+        {logs.length > 0 && (
+          <div className="mb-4 flex justify-end">
+            <Button onClick={clearLogs} variant="destructive">Clear Logs</Button>
           </div>
         )}
+        <LogList logs={logs}/>
+      </div>
     </div>
   )
 }
-
-export default App
