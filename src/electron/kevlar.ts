@@ -57,13 +57,13 @@ export default class KevlarHandler {
             const logMessage = data.toString();
 
             ipcWebContentsSend('logs', this.logWindow.webContents,
-                { message: logMessage, level: 'info', timestamp: formatDate(new Date()) });
+                { message: logMessage, level: 'INFO', timestamp: formatDate(new Date()) });
         });
 
         this.kevlar.stderr?.on('data', (data: any) => {
             const logMessage = data.toString();
             ipcWebContentsSend('logs', this.logWindow.webContents,
-                { message: logMessage, level: 'error', timestamp: formatDate(new Date()) });
+                { message: logMessage, level: 'ERROR', timestamp: formatDate(new Date()) });
             console.error(logMessage);
         });
 
@@ -72,7 +72,7 @@ export default class KevlarHandler {
             ipcWebContentsSend('logs', this.logWindow.webContents,
                 {
                     message: `Kevlar process exited with code ${code}`,
-                    level: 'info', timestamp: formatDate(new Date())
+                    level: 'EXIT', timestamp: formatDate(new Date())
                 });
             this.kevlar = null;
             onCloseCallback();
