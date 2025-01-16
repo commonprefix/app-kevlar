@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import kevlarLogo from '../../../../kevlar.png';
 import './App.css'
 
 function App() {
@@ -44,13 +45,23 @@ function App() {
   };
 
   return (
-    <div className="App" style={{ height: '100%', overflowY: 'auto', padding: '0'}}>
+    <div style={{ textAlign: 'center', padding: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <img src={kevlarLogo} alt="Kevlar Logo" style={{ height: '95px', marginBottom: '20px' }} />
+      </div>
+      <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '10px' }}>kevlar</h1>
+      <p style={{ fontSize: '1rem', marginBottom: '20px' }}>Make your wallet trustless.</p>
       {
-        added && <div>Added to MetaMask</div>
+        added && <button disabled style={{ pointerEvents: 'none' }}>Added to MetaMask</button>
       }
       {
-        !added && <button onClick={handleAddToMetamask}>Add to MetaMask</button>
+        !added && <button onClick={handleAddToMetamask} style={{ padding: '10px 20px' }}>Add to MetaMask</button>
       }
+      <p style={{ fontSize: '0.875rem', marginTop: '30px' }}>
+        By <a style={{ color: 'gray' }} href="https://commonprefix.com" target="_blank" rel="noopener noreferrer">
+          Common Prefix
+        </a>
+      </p>
     </div>
   )
 }
