@@ -5,8 +5,8 @@ export function Log({ log }: { log: Log }) {
   return (
     <Card className="mb-2">
       <CardContent className="p-4 flex items-center justify-between">
-        <span className="text-sm text-gray-500" style={{ minWidth: '12rem' }}>
-          {log.timestamp.toLocaleString()}
+        <span className="text-sm text-gray-500" style={{ minWidth: '9rem' }}>
+          {log.timestamp}
         </span>
         <span className="flex-grow mx-4" style={{ wordBreak: 'break-word', marginRight: '15px' }}>
           {log.message}
