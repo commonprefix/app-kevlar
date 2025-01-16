@@ -10,7 +10,6 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
-    if: github.ref == 'refs/heads/main'
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
@@ -18,7 +17,7 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 16
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
@@ -26,3 +25,7 @@ jobs:
           github_token: ${{ secrets.github_token }}
 
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+
+          packageManager: Yarn
+
+          skip_build: false
