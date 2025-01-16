@@ -6,7 +6,6 @@ import './App.css'
 
 export default function LogsPage() {
   const [logs, setLogs] = useState<Log[]>([])
-  const logsEndRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const unsubscribe = window.electron.subscribeLogs((log: Log) => {
@@ -25,7 +24,7 @@ export default function LogsPage() {
 
   return (
     <div className="flex flex-col items-center justify-center" style={{ height: '100%' }}>
-      <div className="p-8 flex flex-col items-center" style={{ maxWidth: '1080px', height: '100%' }}>
+      <div className="p-8 flex flex-col items-center" style={{ width: '80%', height: '100%' }}>
         <img src={kevlarLogo} alt="Kevlar Logo" style={{ height: '95px', marginBottom: '20px' }} />
         <h1 className="text-3xl font-bold mb-6 text-center">Kevlar Logs</h1>
         <LogList logs={logs}/>
