@@ -1,40 +1,61 @@
-name: Build/release
+name: Build macOS Binary
 
-on: push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build_on_linux:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@master
-      with:
-        node-version: 20
-    - name: install dependencies
-      run: yarn install
-    - name: build
-      run: yarn dist:linux
-
-  build_on_mac:
+  build-macos:
     runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@master
-      with:
-        node-version: 20
-    - name: install dependencies
-      run: yarn install
-    - name: build
-      run: yarn dist:mac
 
-  build_on_win:
-    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@master
-      with:
-        node-version: 20
-    - name: install dependencies
-      run: yarn install
-    - name: build
-      run: yarn dist:win
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Adjust the version to match your project's requirements
+
+      # Install dependencies
+      - name: Install dependencies
+        run: yarn install
+
+      # Build the macOS binary
+      - name: Build macOS binary
+        run: yarn dist:mac
+
+      # Upload the binary as a GitHub artifact
+      - name: Upload macOS binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: macOS-binary
+          path: ./dist/mac-arm64/app-kevlar.app
+
+      # Optionally create a GitHub release and upload the binary
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v1.0.0 # Update this dynamically or manually
+          release_name: macOS Binary Release
+          draft: false
+          prerelease: false
+
+      - name: Upload to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/mac-arm64/app-kevlar.app
+          asset_name: app-kevlar.app
+          asset_content_type: application/octet-stream
