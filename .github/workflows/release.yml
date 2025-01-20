@@ -47,7 +47,9 @@ jobs:
       # Get version from package.json
       - name: Get version from package.json
         id: get_version
-        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       # Optionally create a GitHub release and upload the binary
       - name: Create Release
@@ -60,6 +62,9 @@ jobs:
           release_name: macOS Binary Release
           draft: false
           prerelease: false
+
+      - name: Package .app into a ZIP file
+        run: zip -r app-kevlar.zip ./dist/mac-arm64/app-kevlar.app
 
       - name: Upload to Release
         uses: actions/upload-release-asset@v1
