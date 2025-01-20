@@ -21,7 +21,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Adjust the version to match your project's requirements
+          node-version: '20'
+
+      # Set up GitHub Token
+      - name: Set GitHub Token
+        run: echo "GH_TOKEN=${{ secrets.GH_PAT }}" >> $GITHUB_ENV
 
       # Install dependencies
       - name: Install dependencies
@@ -30,6 +34,8 @@ jobs:
       # Build the macOS binary
       - name: Build macOS binary
         run: yarn dist:mac
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
 
       # Upload the binary as a GitHub artifact
       - name: Upload macOS binary
@@ -38,6 +44,11 @@ jobs:
           name: macOS-binary
           path: ./dist/mac-arm64/app-kevlar.app
 
+      # Get version from package.json
+      - name: Get version from package.json
+        id: get_version
+        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+
       # Optionally create a GitHub release and upload the binary
       - name: Create Release
         id: create_release
@@ -45,7 +56,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.0 # Update this dynamically or manually
+          tag_name: v${{ env.VERSION }}
           release_name: macOS Binary Release
           draft: false
           prerelease: false
