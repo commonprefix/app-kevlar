@@ -51,7 +51,10 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      # Optionally create a GitHub release and upload the binary
+      - name: Package .app into a ZIP file
+        run: zip -r app-kevlar-v${{ env.VERSION }}.zip ./dist/mac-arm64/app-kevlar.app
+
+      # Create a GitHub release and upload the binary
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -59,19 +62,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ env.VERSION }}
-          release_name: macOS Binary Release
+          release_name: Release v${{ env.VERSION }}
           draft: false
           prerelease: false
 
-      - name: Package .app into a ZIP file
-        run: zip -r app-kevlar.zip ./dist/mac-arm64/app-kevlar.app
-
+      # Upload the release asset
       - name: Upload to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/mac-arm64/app-kevlar.app
-          asset_name: app-kevlar.app
-          asset_content_type: application/octet-stream
+          asset_path: ./app-kevlar-v${{ env.VERSION }}.zip
+          asset_name: app-kevlar-v${{ env.VERSION }}.zip
+          asset_content_type: application/zip
