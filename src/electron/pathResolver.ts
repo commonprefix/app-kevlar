@@ -1,6 +1,8 @@
 import path from 'path';
 import { app } from 'electron';
 import { isDev } from './utils.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
 export function getPreloadPath() {
   return path.join(
@@ -27,5 +29,18 @@ export function getAssetPath() {
 }
 
 export function getKevlarPath() {
-  return path.join(app.getAppPath(), isDev() ? '.' : '..', 'dist-electron/kevlar/start-rpc.js');
+  if (process.env.NODE_ENV === 'development') {
+    return require.resolve('@lightclients/kevlar/dist/rpc-bundle/start-rpc.js');
+  } else {
+    return path.join(
+      process.resourcesPath,
+      'app.asar.unpacked',
+      'node_modules',
+      '@lightclients',
+      'kevlar',
+      'dist',
+      'rpc-bundle',
+      'start-rpc.js'
+    );
+  }
 }

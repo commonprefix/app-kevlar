@@ -1,11 +1,9 @@
-import net from 'net';
-import { fork, ChildProcess } from 'child_process';
-import { BrowserWindow, Notification } from 'electron';
-import { ipcWebContentsSend } from './utils.js';
+import { BrowserWindow, Notification, utilityProcess, UtilityProcess } from 'electron';
+import { ipcWebContentsSend, isPortInUse, formatDate } from './utils.js';
 import { getKevlarPath } from './pathResolver.js';
 
 export default class KevlarHandler {
-    kevlar: ChildProcess | null = null;
+    kevlar: UtilityProcess | null = null;
     logWindow: BrowserWindow;
     port: number;
 
@@ -16,19 +14,6 @@ export default class KevlarHandler {
 
     async start(onStartCallback: () => void, onCloseCallback: () => void): Promise<void> {
         console.log('Starting Kevlar');
-
-        const isPortInUse = (port: number): Promise<boolean> => {
-            return new Promise((resolve) => {
-                const tester = net.createConnection({ port }, () => {
-                    resolve(true);
-                    tester.end();
-                });
-
-                tester.on('error', () => {
-                    resolve(false);
-                });
-            });
-        };
 
         const portInUse = await isPortInUse(this.port);
         if (portInUse) {
@@ -41,17 +26,7 @@ export default class KevlarHandler {
         }
         onStartCallback();
 
-        const formatDate = (date: Date) => {
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const seconds = String(date.getSeconds()).padStart(2, '0');
-            return `${day}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
-        };
-
-        this.kevlar = fork(getKevlarPath(), { silent: true });
+        this.kevlar = utilityProcess.fork(getKevlarPath(), [], { stdio: 'pipe' });
 
         this.kevlar.stdout?.on('data', (data: any) => {
             const logMessage = data.toString();
@@ -67,7 +42,7 @@ export default class KevlarHandler {
             console.error(logMessage);
         });
 
-        this.kevlar.on('close', (code: number) => {
+        this.kevlar.on('exit', (code: number) => {
             console.log(`Kevlar process exited with code ${code}`);
             ipcWebContentsSend('logs', this.logWindow.webContents,
                 {
