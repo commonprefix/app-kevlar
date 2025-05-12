@@ -3,6 +3,9 @@
   "files": ["dist-electron", "dist-react"],
   "extraResources": ["dist-electron/preload.cjs", "src/assets/**", "dist-electron/kevlar/**"],
   "icon": "./kevlar.png",
+  "asarUnpack": [
+    "node_modules/**"
+  ],
   "mac": {
     "target": "dmg"
   },

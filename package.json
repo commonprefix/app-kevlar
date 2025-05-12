@@ -1,5 +1,5 @@
 {
-  "name": "app-kevlar",
+  "name": "kevlar-app",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -14,11 +14,18 @@
     "transpile:electron": "tsc --project src/electron/tsconfig.json",
     "dist:mac": "yarn transpile:electron && yarn build && electron-builder --mac --arm64",
     "dist:win ": "yarn transpile:electron && yarn build && electron-builder --win --x64",
-    "dist:linux": "yarn transpile:electron && yarn build && electron-builder --linux --x64"
+    "dist:linux": "yarn transpile:electron && yarn build && electron-builder --linux --x64",
+    "clean": "rm -rf dist dist-react dist-electron"
   },
   "dependencies": {
-    "@chainsafe/blst": "^0.2.10",
+    "@chainsafe/blst": "0.2.10",
     "@lightclients/kevlar": "^0.4.2",
+    "@noble/hashes": "1.4.0",
+    "@lodestar/api": "1.22.0",
+    "@lodestar/config": "1.22.0",
+    "@lodestar/light-client": "1.22.0",
+    "@lodestar/params": "1.22.0",
+    "@lodestar/types": "1.22.0",
     "@radix-ui/react-popover": "^1.1.4",
     "@radix-ui/react-scroll-area": "^1.2.2",
     "@radix-ui/react-select": "^2.1.4",
@@ -59,5 +66,13 @@
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.11.0",
     "vite": "^5.4.10"
+  },
+  "resolutions": {
+    "@noble/hashes": "1.4.0",
+    "@lodestar/params": "1.22.0",
+    "@lodestar/config": "1.22.0",
+    "@lodestar/api": "1.22.0",
+    "@lodestar/light-client": "1.22.0",
+    "@lodestar/types": "1.22.0"
   }
 }
